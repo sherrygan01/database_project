@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import com.mysql.cj.api.jdbc.Statement;
 import com.mysql.cj.jdbc.PreparedStatement;
 
+import algorithm.Constant;
+
 public class syntheticDataset {
 	// address of link database
 	private static final String URL = "jdbc:mysql://127.0.0.1:3306/database_project?useSSL=false";
@@ -33,7 +35,12 @@ public class syntheticDataset {
 		
 		for (int i=0; i<TupleNumber ;i++){
 			st.executeUpdate(insert(i));
-		}
+		} 
+		
+		String sql2 =createNewTable2();
+		st.execute(sql2);
+		
+		st.executeUpdate(insert2());
 		
 	  
 	}       
@@ -57,9 +64,34 @@ public class syntheticDataset {
 		   System.out.println(insertSql);
 		return insertSql;
 	   }
+	   
+	   public static String insert2(){
+		   String insertSql= "INSERT INTO database_project.run_tempo SELECT * FROM database_project.running limit "+ Constant.k1;
+		   
+		return insertSql;
+	   }
 		public static String createNewTable(){
 	        // SQL statement for creating a new table
 	        String sql = "CREATE TABLE IF NOT EXISTS running ( ";
+	        sql=sql+" "+"id"+" "+"Integer"+" NOT NULL"+", ";
+	        for(int i=1;i<=AttributeNumber;i++){
+	        sql=sql+" "+"a"+i+" "+"boolean"+" NULL"+", ";
+	        }
+	        sql=sql+" PRIMARY KEY ( id ))"; 
+	        
+	        
+	        System.out.println(sql);
+	          //      + "	id integer PRIMARY KEY,\n"
+	           //     + "	name text NOT NULL,\n"
+	           //     + "	capacity real\n"
+	           //   + ");";
+	        
+	       return sql;
+	    }
+		
+		public static String createNewTable2(){
+	        // SQL statement for creating a new table
+	        String sql = "CREATE TABLE IF NOT EXISTS run_tempo ( ";
 	        sql=sql+" "+"id"+" "+"Integer"+" NOT NULL"+", ";
 	        for(int i=1;i<=AttributeNumber;i++){
 	        sql=sql+" "+"a"+i+" "+"boolean"+" NULL"+", ";
